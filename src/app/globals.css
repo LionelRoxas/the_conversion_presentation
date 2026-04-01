@@ -1,26 +1,234 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-dark: #0a0a0f;
+  --bg-scene: #111118;
+  --text-primary: #e8e4df;
+  --text-dim: #8a8680;
+  --accent-rust: #a0522d;
+  --accent-indigo: #2e3a5c;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: ui-sans-serif, system-ui, sans-serif;
-  --font-mono: ui-monospace, monospace;
+  --color-bg-dark: var(--bg-dark);
+  --color-bg-scene: var(--bg-scene);
+  --color-text-primary: var(--text-primary);
+  --color-text-dim: var(--text-dim);
+  --color-accent-rust: var(--accent-rust);
+  --color-accent-indigo: var(--accent-indigo);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg-dark);
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text-primary);
+  overflow-x: hidden;
+  font-family: var(--font-inter);
+}
+
+/* Hero */
+.hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  text-align: center;
+  z-index: 2;
+  position: relative;
+}
+
+.hero h1 {
+  font-family: var(--font-playfair);
+  font-size: clamp(3.5rem, 9vw, 8rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--text-primary);
+}
+
+.hero .author {
+  font-family: var(--font-inter);
+  font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+  font-weight: 300;
+  color: var(--text-dim);
+  margin-top: 1rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.hero .hero-summary {
+  font-family: var(--font-inter);
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  font-weight: 300;
+  color: var(--text-dim);
+  max-width: 640px;
+  margin: 2.5rem auto 0;
+  padding: 2rem 2.5rem;
+  line-height: 1.8;
+  text-align: center;
+  background: rgba(10, 10, 15, 0.5);
+  border-radius: 4px;
+}
+
+.hero .scroll-cue {
+  font-family: var(--font-inter);
+  font-size: 1rem;
+  color: var(--text-dim);
+  margin-top: 4rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: pulse-fade 2s ease-in-out infinite;
+}
+
+@keyframes pulse-fade {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+.scroll-cue-arrow {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 1.8rem;
+  animation: bounce-down 1.5s ease-in-out infinite;
+}
+
+@keyframes bounce-down {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+/* Scrolly sections */
+.scrolly {
+  position: relative;
+  min-height: 100vh;
+}
+
+.scrolly__graphic {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.scene-graphic {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Film grain overlay */
+.grain-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+.scrolly__steps {
+  position: relative;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.step {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.step-content {
+  max-width: 700px;
+  background: rgba(10, 10, 15, 0.85);
+  backdrop-filter: blur(10px);
+  padding: 2.5rem 3.5rem;
+  border-radius: 4px;
+  border-left: 3px solid var(--accent-rust);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.step.is-active .step-content {
+  opacity: 1;
+}
+
+.step-text {
+  font-family: var(--font-playfair);
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  font-style: italic;
+  text-align: center;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.step-caption {
+  font-family: var(--font-playfair);
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text-dim);
+  text-align: center;
+  line-height: 1.7;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(138, 134, 128, 0.15);
+}
+
+.step-interpretation {
+  font-family: var(--font-inter);
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  font-weight: 300;
+  color: var(--accent-rust);
+  text-align: center;
+  line-height: 1.7;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(160, 82, 45, 0.15);
+  opacity: 0.85;
+}
+
+/* Credits */
+.credits {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+  padding: 4rem 2rem;
+  background: var(--bg-dark);
+}
+
+.credits p {
+  font-family: var(--font-inter);
+  font-size: 1.2rem;
+  color: var(--text-dim);
+  font-weight: 300;
+}
+
+.credits .credit-title {
+  font-family: var(--font-playfair);
+  font-size: 2rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
 }
